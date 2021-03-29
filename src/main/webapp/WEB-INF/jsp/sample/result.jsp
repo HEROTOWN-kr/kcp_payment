@@ -39,8 +39,8 @@
     String amount           = f_get_parm( request.getParameter( "amount"         ) );      // KCP 실제 거래 금액
     String ordr_idxx        = f_get_parm( request.getParameter( "ordr_idxx"      ) );      // 주문번호
     String tno              = f_get_parm( request.getParameter( "tno"            ) );      // KCP 거래번호
-    String good_name        = f_get_parm( request.getParameter( "good_name"      ) );      // 상품명
     String buyr_name        = f_get_parm( request.getParameter( "buyr_name"      ) );      // 구매자명
+    String good_name        = f_get_parm( request.getParameter( "good_name"      ) );      // 상품명
     String buyr_tel1        = f_get_parm( request.getParameter( "buyr_tel1"      ) );      // 구매자 전화번호
     String buyr_tel2        = f_get_parm( request.getParameter( "buyr_tel2"      ) );      // 구매자 휴대폰번호
     String buyr_mail        = f_get_parm( request.getParameter( "buyr_mail"      ) );      // 구매자 E-Mail

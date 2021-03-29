@@ -39,7 +39,8 @@
           return  val;
         }
     /* ============================================================================== */
-%>    
+
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -117,7 +118,14 @@
             {
                 /* IE 에서 결제 정상종료시 throw로 스크립트 종료 */ 
             }
-        }             
+        }
+
+
+        function goResult()
+        {
+            var submitButton = document.getElementById('order_submit');
+            submitButton.click();
+        }
 
         /* 주문번호 생성 예제 */
         function init_orderid()
@@ -138,7 +146,9 @@
 
             var order_idxx = "TEST" + year + "" + month + "" + date + "" + time;
 
-            document.order_info.ordr_idxx.value = order_idxx;            
+            document.order_info.ordr_idxx.value = order_idxx;
+
+            goResult();
         }
 
         /* test */
@@ -217,27 +227,27 @@
                     <!-- 상품명(good_name) -->
                     <tr>
                         <th>상품명</th>
-                        <td><input type="text" name="good_name" class="w100" value="운동화"/></td>
+                        <td><input type="text" name="good_name" class="w100" value="${plan}"/></td>
                     </tr>
                     <!-- 결제금액(good_mny) - ※ 필수 : 값 설정시 ,(콤마)를 제외한 숫자만 입력하여 주십시오. -->
                     <tr>
                         <th>결제 금액</th>
-                        <td><input type="text" name="good_mny" class="w100" value="1004" maxlength="9"/>원(숫자만 입력)</td>
+                        <td><input type="text" name="good_mny" class="w100" value="${money}" maxlength="9"/>원(숫자만 입력)</td>
                     </tr>
                     <!-- 주문자명(buyr_name) -->
                     <tr>
                         <th>주문자명</th>
-                        <td><input type="text" name="buyr_name" class="w100" value="홍길동"/></td>
+                        <td><input type="text" name="buyr_name" class="w100" value="${name}"/></td>
                     </tr>
                     <!-- 주문자 E-mail(buyr_mail) -->
                     <tr>
                         <th>E-mail</th>
-                        <td><input type="text" name="buyr_mail" class="w200" value="test@test.co.kr" maxlength="30" /></td>
+                        <td><input type="text" name="buyr_mail" class="w200" value="${email}" maxlength="30" /></td>
                     </tr>
                     <!-- 주문자 연락처1(buyr_tel1) -->
                     <tr>
                         <th>전화번호</th>
-                        <td><input type="text" name="buyr_tel1" class="w100" value="02-2108-1000"/></td>
+                        <td><input type="text" name="buyr_tel1" class="w100" value="${phone}"/></td>
                     </tr>
                     <!-- 휴대폰번호(buyr_tel2) -->
                     <tr>
@@ -248,7 +258,7 @@
 
                     <!-- 결제 요청/처음으로 이미지 -->
                     <div class="btnset" id="display_pay_button" style="display:block">
-                      <input name="" type="button" class="submit" value="결제요청" onclick="jsf__pay(this.form);"/>
+                      <input name="" id="order_submit" type="button" class="submit" value="결제요청" onclick="jsf__pay(this.form);"/>
                       <a href="/" class="home">처음으로</a>
                     </div>
                     
