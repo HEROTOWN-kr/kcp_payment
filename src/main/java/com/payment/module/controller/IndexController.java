@@ -2,15 +2,18 @@ package com.payment.module.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import com.kcp.*;
+
+import java.nio.charset.StandardCharsets;
+import java.sql.*;
+
+import java.util.ArrayList;
 import java.util.Map;
 
 @Controller
-public class IndexController {
+public class IndexController{
 
     @GetMapping("/")
     public String index(){
@@ -50,13 +53,25 @@ public class IndexController {
 
     @RequestMapping(value = "/pp_cli_hub", method = RequestMethod.POST)
     public String pp_cli_hub() {
-        return "sample/pp_cli_hub";
+       return "sample/pp_cli_hub";
     }
+    /*public String pp_cli_hub(@RequestParam Map<String,String> allParams, ModelMap model) {
+
+
+        return "sample/pp_cli_hub";
+    }*/
 
     @RequestMapping(value = "/payment/pp_cli_hub", method = RequestMethod.POST)
-    public String payment_pp_cli_hub() {
+    public String payment_pp_cli_hub(@RequestParam Map<String,Object> allParams) {
+//        request.setCharacterEncoding("UTF-8");
+//    public String payment_pp_cli_hub(@RequestParam("good_name") String goodName) {
+//        String username = request.getParameter("username"));
+
         return "payment/pp_cli_hub";
     }
+    /*public String payment_pp_cli_hub(@RequestBody Map<String,Object> body) {
+        return "payment/pp_cli_hub";
+    }*/
 
     @RequestMapping(value = "/result", method = RequestMethod.POST)
     public String result() {
