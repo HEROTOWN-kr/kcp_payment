@@ -70,8 +70,16 @@ public class IndexController{
         int    g_conf_tx_mode   = 0;             // 변경불가
         String g_conf_log_dir   = "C:\\Tomcat\\apache-tomcat-8.5.64\\logs";             // LOG 디렉토리 절대경로 입력
 
+        if (allParams.get("req_tx").equals("pay")) {
+//            c_PayPlus.mf_set_enc_data( f_get_parm( request.getParameter( "enc_data" ) ),
+//                    f_get_parm( request.getParameter( "enc_info" ) ) );
+        }; // 요청 종류
+
+
         c_PayPlus.mf_init( "", g_conf_gw_url, g_conf_gw_port, g_conf_tx_mode, g_conf_log_dir );
         c_PayPlus.mf_init_set();
+
+
 
         return "payment/pp_cli_hub";
     }
