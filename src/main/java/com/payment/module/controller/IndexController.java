@@ -63,9 +63,15 @@ public class IndexController{
 
     @RequestMapping(value = "/payment/pp_cli_hub", method = RequestMethod.POST)
     public String payment_pp_cli_hub(@RequestParam Map<String,Object> allParams) {
-//        request.setCharacterEncoding("UTF-8");
-//    public String payment_pp_cli_hub(@RequestParam("good_name") String goodName) {
-//        String username = request.getParameter("username"));
+        J_PP_CLI_N c_PayPlus = new J_PP_CLI_N();
+
+        String g_conf_gw_url    = "testpaygw.kcp.co.kr";
+        String g_conf_gw_port   = "8090";        // 포트번호(변경불가)
+        int    g_conf_tx_mode   = 0;             // 변경불가
+        String g_conf_log_dir   = "C:\\Tomcat\\apache-tomcat-8.5.64\\logs";             // LOG 디렉토리 절대경로 입력
+
+        c_PayPlus.mf_init( "", g_conf_gw_url, g_conf_gw_port, g_conf_tx_mode, g_conf_log_dir );
+        c_PayPlus.mf_init_set();
 
         return "payment/pp_cli_hub";
     }

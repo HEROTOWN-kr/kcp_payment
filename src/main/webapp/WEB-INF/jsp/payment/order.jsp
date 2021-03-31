@@ -162,7 +162,7 @@
 <div id="sample_wrap">
 
 <!-- 주문정보 입력 form : order_info -->
-<form name="order_info" method="post" action="/payment/pp_cli_hub" enctype="application/json">
+<form name="order_info" method="post" action="/payment/pp_cli_hub" accept-charset="UTF-8">
 
 <%
     /* ============================================================================== */
