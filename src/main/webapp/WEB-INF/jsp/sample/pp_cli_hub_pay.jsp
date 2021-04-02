@@ -79,10 +79,10 @@
     /* ============================================================================== */
 %>
 <%
-    String dbConnect         = getRequestData(); // db connect
+//    String dbConnect         = getRequestData(); // db connect
 
 
-    request.setCharacterEncoding ( "euc-kr" ) ;
+    request.setCharacterEncoding ( "euc-kr" );
     /* ============================================================================== */
     /* =   02. 지불 요청 정보 설정                                                  = */
     /* = -------------------------------------------------------------------------- = */

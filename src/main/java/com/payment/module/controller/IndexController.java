@@ -1,6 +1,9 @@
 package com.payment.module.controller;
 
 import com.payment.module.model.TbPayment;
+import com.payment.module.repository.PaymentRepository;
+import com.payment.module.repository.PaymentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,9 @@ public class IndexController{
         if ( val == null ) val = "";
         return  val;
     }
+
+    @Autowired
+    private PaymentService paymentService;
 
     @GetMapping("/")
     public String index(){
@@ -80,7 +86,7 @@ public class IndexController{
     @RequestParam(value = "enc_info", required = true) String enc_info,
     @RequestParam(value = "good_mny", required = true) String request_good_mny,
     @RequestParam(value = "use_pay_method", required = true) String request_use_pay_method,
-    @RequestParam(value = "shop_user_id", required = true) String request_shop_user_id,
+    @RequestParam(value = "shop_user_id", required = false) String request_shop_user_id,
     @RequestParam(value = "cash_yn", required = true) String request_cash_yn,
     @RequestParam(value = "cash_tr_code", required = true) String request_cash_tr_code,
     @RequestParam(value = "cash_id_info", required = true) String request_cash_id_info,
@@ -154,7 +160,6 @@ public class IndexController{
         String cash_tr_code   = f_get_parm( request_cash_tr_code ); // 현금 영수증 발행 구분
         String cash_id_info   = f_get_parm( request_cash_id_info ); // 현금 영수증 등록 번호
         String cash_no        = "";                                                     // 현금 영수증 거래 번호
-
 
 
         /* ============================================================================== */
@@ -355,33 +360,24 @@ public class IndexController{
             /* = -------------------------------------------------------------------------- = */
             if ( res_cd.equals( "0000" ) )
             {
-                try{
-
-                    TbPayment payment = new TbPayment();
-                    payment.setAdvId(1);
-                    payment.setPayTno("222");
-
-                } catch (Exception e){
-                    e.printStackTrace();
-
-                }
+                TbPayment payment = new TbPayment();
+                payment.setAdvId(1);
+                payment.setPayTno(tno);
+                payment.setPayAmount(amount);
 
                 // 07-1-1. 신용카드
                 if ( use_pay_method.equals( "100000000000" ) )
                 {
-
-                    card_cd   = c_PayPlus.mf_get_res( "card_cd"   ); // 카드사 코드
-                    card_name = c_PayPlus.mf_get_res( "card_name" ); // 카드사 명
-                    app_time  = c_PayPlus.mf_get_res( "app_time"  ); // 승인시간
-                    app_no    = c_PayPlus.mf_get_res( "app_no"    ); // 승인번호
-                    noinf     = c_PayPlus.mf_get_res( "noinf"     ); // 무이자 여부
-                    quota     = c_PayPlus.mf_get_res( "quota"     ); // 할부 개월 수
-                    partcanc_yn = c_PayPlus.mf_get_res( "partcanc_yn"     ); // 부분취소 가능유무
-                    card_bin_type_01 = c_PayPlus.mf_get_res( "card_bin_type_01" ); // 카드구분1
-                    card_bin_type_02 = c_PayPlus.mf_get_res( "card_bin_type_02" ); // 카드구분2
-                    card_mny = c_PayPlus.mf_get_res( "card_mny" ); // 카드결제금액
-
-
+                    payment.setPayCardCd(card_cd);
+                    payment.setPayCardName(card_name);
+                    payment.setPayAppTime(app_time);
+                    payment.setPayAppNo(app_no);
+                    payment.setPayNoinf(noinf);
+                    payment.setPayQuota(quota);
+                    payment.setPayPartcancYn(partcanc_yn);
+                    payment.setPayCardBinType01(card_bin_type_01);
+                    payment.setPayCardBinType02(card_bin_type_02);
+                    payment.setPayCardMny(card_mny);
 
                     // 07-1-1-1. 복합결제(신용카드+포인트)
                     if ( pnt_issue.equals( "SCSK" ) || pnt_issue.equals( "SCWB" ) )
@@ -417,6 +413,14 @@ public class IndexController{
                 {
 
                 }
+
+                 try {
+                    paymentService.save(payment);
+                } catch (Exception e){
+                    e.printStackTrace();
+                    bSucc = "false";
+                }
+
             }
 
             /* = -------------------------------------------------------------------------- = */
@@ -444,7 +448,7 @@ public class IndexController{
         /* = -------------------------------------------------------------------------- = */
 
         // 승인 결과 DB 처리 에러시 bSucc값을 false로 설정하여 거래건을 취소 요청
-        bSucc = "";
+//        bSucc = "";
 
         if (req_tx.equals("pay") )
         {

@@ -137,7 +137,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
 	<meta http-equiv="Pragma" content="no-cache"> 
 	<meta http-equiv="Expires" content="-1">
-    <link href="sample/css/style.css" rel="stylesheet" type="text/css" id="cssLink"/>
+    <link href="css/style.css" rel="stylesheet" type="text/css" id="cssLink"/>
     <script type="text/javascript">
         /* 신용카드 영수증 */ 
         /* 실결제시 : "https://admin8.kcp.co.kr/assist/bill.BillActionNew.do?cmd=card_bill&tno=" */ 
