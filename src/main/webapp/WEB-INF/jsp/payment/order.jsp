@@ -283,6 +283,7 @@
     <input type="hidden" name="req_tx"          value="pay" />
     <input type="hidden" name="site_cd"         value="<%= g_conf_site_cd   %>" />
     <input type="hidden" name="site_name"       value="<%= g_conf_site_name %>" />
+    <input type="hidden" name="advId"       value="${advId}" />
 <%
     /*
        할부옵션 : 표준웹에서 카드결제시 최대로 표시할 할부개월 수를 설정합니다.(0 ~ 18 까지 설정 가능)
@@ -402,7 +403,7 @@
     ※ 주의 : 로고 용량이 150 X 50 이상일 경우 site_name 값이 표시됩니다.
         <input type="hidden" name="site_logo"       value="" /> */
 
-    /* 결제창 영문 표시 파라미터 입니다. 영문을 기본으로 사용하시려면 Y로 세팅하시기 바랍니다
+    /* 결제창 영문 표시으 파라미터 입니다. 영문을 기본로 사용하시려면 Y로 세팅하시기 바랍니다
         2010-06월 현재 신용카드와 가상계좌만 지원됩니다
         <input type="hidden" name="eng_flag"      value="Y"> */
 

@@ -36,35 +36,6 @@
           if ( val == null ) val = "";
           return  val;
         }
-
-        public String getRequestData() {
-            try{
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/inflai","inflai","herotown2020!");
-
-                String query = "SELECT * FROM TEST_TABLE WHERE ID = 1";
-                Statement st = con.createStatement();
-
-                ResultSet rs = st.executeQuery(query);
-
-                while (rs.next()) {
-                    String planName = rs.getString("TEST_NAME");
-                    System.out.format("%s\n", planName);
-                }
-                con.close();
-
-                /*String query = "update TEST_TABLE set TEST_NAME = ? where ID = ?";
-                PreparedStatement preparedStmt = con.prepareStatement(query);
-                preparedStmt.setString  (1, "planName2");
-                preparedStmt.setInt(2, 1);
-                preparedStmt.executeUpdate();
-                con.close();*/
-                return "success";
-            } catch (Exception e){
-                e.printStackTrace();
-                return "not success";
-            }
-        }
     /* ============================================================================== */
 %>
 <%
@@ -79,7 +50,6 @@
     /* ============================================================================== */
 %>
 <%
-    String dbConnect         = getRequestData(); // db connect
 
 
     request.setCharacterEncoding ( "euc-kr" ) ;

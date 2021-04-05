@@ -1,8 +1,10 @@
 package com.payment.module.controller;
 
 import com.payment.module.model.TbPayment;
+import com.payment.module.model.TbPlan;
 import com.payment.module.repository.PaymentRepository;
 import com.payment.module.repository.PaymentService;
+import com.payment.module.repository.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,6 +30,9 @@ public class IndexController{
 
     @Autowired
     private PaymentService paymentService;
+
+    @Autowired
+    private PlanService planService;
 
     @GetMapping("/")
     public String index(){
@@ -55,13 +60,28 @@ public class IndexController{
     }
 
     @RequestMapping(value = "/payment/order", method = RequestMethod.GET)
-    public String payment_web_order(@RequestParam Map<String,String> allParams, ModelMap model) {
+    public String payment_web_order(@RequestParam Map<String,String> allParams, ModelMap model, HttpServletRequest request) {
         model.addAttribute("money", allParams.get("money"));
         model.addAttribute("plan", allParams.get("plan"));
         model.addAttribute("name", allParams.get("name"));
         model.addAttribute("email", allParams.get("email"));
         model.addAttribute("phone", allParams.get("phone"));
-        return "payment/order";
+        model.addAttribute("advId", allParams.get("advId"));
+
+        String PLN_ID = request.getParameter("planId");
+        int planId = Integer.parseInt(PLN_ID);
+
+        try {
+            TbPlan MyPlan = planService.get(planId);
+
+
+            return "payment/order";
+        } catch (Exception e){
+            e.printStackTrace();
+            return "payment/order";
+        }
+
+
     }
 //@RequestParam(defaultValue = "1000") String money, Model model    model.addAttribute("money", money);
 
@@ -78,6 +98,7 @@ public class IndexController{
     @RequestMapping(value = "/payment/pp_cli_hub", method = RequestMethod.POST)
     public String payment_pp_cli_hub(
 //            @RequestParam Map<String,Object> allParams
+    @RequestParam(value = "advId", required = true) String advId,
     @RequestParam(value = "req_tx", required = true) String request_req_tx,
     @RequestParam(value = "tran_cd", required = true) String request_tran_cd,
     @RequestParam(value = "ordr_idxx", required = true) String request_ordr_idxx,
@@ -99,6 +120,7 @@ public class IndexController{
         /* = -------------------------------------------------------------------------- = */
         String req_tx         = f_get_parm( request_req_tx ); // 요청 종류
         String tran_cd        = f_get_parm( request_tran_cd ); // 처리 종류
+        int advertiserId = Integer.parseInt(advId);
         /* = -------------------------------------------------------------------------- = */
         String cust_ip        = f_get_parm( request.getRemoteAddr()                  ); // 요청 IP
         String ordr_idxx      = f_get_parm( request_ordr_idxx ); // 쇼핑몰 주문번호
@@ -361,9 +383,11 @@ public class IndexController{
             if ( res_cd.equals( "0000" ) )
             {
                 TbPayment payment = new TbPayment();
-                payment.setAdvId(1);
+                payment.setAdvId(advertiserId);
                 payment.setPayTno(tno);
                 payment.setPayAmount(amount);
+                payment.setPayPntIssue(pnt_issue);
+                payment.setPayCouponMny(coupon_mny);
 
                 // 07-1-1. 신용카드
                 if ( use_pay_method.equals( "100000000000" ) )
@@ -382,7 +406,13 @@ public class IndexController{
                     // 07-1-1-1. 복합결제(신용카드+포인트)
                     if ( pnt_issue.equals( "SCSK" ) || pnt_issue.equals( "SCWB" ) )
                     {
-
+                        payment.setPayPntAmount(pnt_amount);
+                        payment.setPayPntAppTime(pnt_app_time);
+                        payment.setPayPntAppNo(pnt_app_no);
+                        payment.setPayAddPnt(add_pnt);
+                        payment.setPayUsePnt(use_pnt);
+                        payment.setPayRsvPnt(rsv_pnt);
+                        payment.setPayTotalAmount(total_amount);
                     }
 
 
@@ -391,28 +421,47 @@ public class IndexController{
                 // 07-1-2. 계좌이체
                 if ( use_pay_method.equals("010000000000") )
                 {
-
+                    payment.setPayAppTime(app_time);
+                    payment.setPayBank_Name(bank_name);
+                    payment.setPayBankCode(bank_code);
+                    payment.setPayBkMny(bk_mny);
                 }
                 // 07-1-3. 가상계좌
                 if ( use_pay_method.equals("001000000000") )
                 {
+                    payment.setPayBankname(bankname);
+                    payment.setPayDepositor(depositor);
+                    payment.setPayAccount(account);
+                    payment.setPayVaDate(va_date);
 
                 }
                 // 07-1-4. 포인트
                 if ( use_pay_method.equals("000100000000") )
                 {
-
+                    payment.setPayPntAmount(pnt_amount);
+                    payment.setPayPntAppTime(pnt_app_time);
+                    payment.setPayPntAppNo(pnt_app_no);
+                    payment.setPayAddPnt(add_pnt);
+                    payment.setPayUsePnt(use_pnt);
+                    payment.setPayRsvPnt(rsv_pnt);
                 }
                 // 07-1-5. 휴대폰
                 if ( use_pay_method.equals("000010000000") )
                 {
-
+                    payment.setPayAppTime(app_time);
+                    payment.setPayCommid(commid);
+                    payment.setPayMobileNo(mobile_no);
                 }
                 // 07-1-6. 상품권
                 if ( use_pay_method.equals("000000001000") )
                 {
-
+                    payment.setPayAppTime(app_time);
+                    payment.setPayTkVanCode(tk_van_code);
+                    payment.setPayTkAppNo(tk_app_no);
                 }
+
+                payment.setPayCashAuthno(cash_authno);
+                payment.setPayCashNo(cash_no);
 
                  try {
                     paymentService.save(payment);
@@ -420,7 +469,6 @@ public class IndexController{
                     e.printStackTrace();
                     bSucc = "false";
                 }
-
             }
 
             /* = -------------------------------------------------------------------------- = */
