@@ -1,7 +1,8 @@
-package com.payment.module.repository;
+package com.payment.module.service;
 
 import com.payment.module.model.TbPayment;
 import com.payment.module.model.TbPlan;
+import com.payment.module.repository.PlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

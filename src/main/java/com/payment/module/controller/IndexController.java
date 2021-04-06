@@ -2,9 +2,11 @@ package com.payment.module.controller;
 
 import com.payment.module.model.TbPayment;
 import com.payment.module.model.TbPlan;
-import com.payment.module.repository.PaymentRepository;
-import com.payment.module.repository.PaymentService;
-import com.payment.module.repository.PlanService;
+import com.payment.module.model.TbSubscription;
+import com.payment.module.repository.*;
+import com.payment.module.service.PaymentService;
+import com.payment.module.service.PlanService;
+import com.payment.module.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,10 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import com.kcp.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.StandardCharsets;
 import java.sql.*;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Map;
 
 
@@ -33,6 +34,12 @@ public class IndexController{
 
     @Autowired
     private PlanService planService;
+
+    @Autowired
+    private SubscriptionService subscriptionService;
+
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
 
     @GetMapping("/")
     public String index(){
@@ -67,12 +74,35 @@ public class IndexController{
         model.addAttribute("email", allParams.get("email"));
         model.addAttribute("phone", allParams.get("phone"));
         model.addAttribute("advId", allParams.get("advId"));
+        model.addAttribute("planId", allParams.get("planId"));
 
         String PLN_ID = request.getParameter("planId");
+        String ADV_ID = request.getParameter("advId");
+
         int planId = Integer.parseInt(PLN_ID);
+        int advId = Integer.parseInt(ADV_ID);
 
         try {
             TbPlan MyPlan = planService.get(planId);
+            int planMonth = MyPlan.getPlnMonth();
+            int planPrice = MyPlan.getPlnPriceMonth();
+            double finalPrice = Math.round(planMonth * planPrice * 1.1);
+
+            LocalDate currentLocalDate = LocalDate.now();
+            LocalDate finishLocalDate = LocalDate.now().plusMonths(planMonth);
+
+            Date currentDate = Date.valueOf(currentLocalDate);
+            Date finishDate = Date.valueOf(finishLocalDate);
+
+            subscriptionRepository.updateSubscription(ADV_ID);
+            TbSubscription subscription = new TbSubscription();
+            subscription.setPlnId(planId);
+            subscription.setAdvId(advId);
+            subscription.setSubStartDt(currentDate);
+            subscription.setSubEndDt(finishDate);
+            subscription.setSubStatus("2");
+            subscription.setSubActive("1");
+            subscriptionService.save(subscription);
 
 
             return "payment/order";
