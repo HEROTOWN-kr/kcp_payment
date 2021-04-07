@@ -76,7 +76,7 @@
             
             if( frm.res_cd.value == "0000" )
             {
-			    alert("결제 승인 요청 전,\n\n반드시 결제창에서 고객님이 결제 인증 완료 후\n\n리턴 받은 ordr_chk 와 업체 측 주문정보를\n\n다시 한번 검증 후 결제 승인 요청하시기 바랍니다."); //업체 연동 시 필수 확인 사항.
+			    // alert("결제 승인 요청 전,\n\n반드시 결제창에서 고객님이 결제 인증 완료 후\n\n리턴 받은 ordr_chk 와 업체 측 주문정보를\n\n다시 한번 검증 후 결제 승인 요청하시기 바랍니다."); //업체 연동 시 필수 확인 사항.
                 /*
                     가맹점 리턴값 처리 영역
                 */
@@ -284,6 +284,7 @@
     <input type="hidden" name="site_cd"         value="<%= g_conf_site_cd   %>" />
     <input type="hidden" name="site_name"       value="<%= g_conf_site_name %>" />
     <input type="hidden" name="advId"       value="${advId}" />
+    <input type="hidden" name="planId"       value="${planId}" />
 <%
     /*
        할부옵션 : 표준웹에서 카드결제시 최대로 표시할 할부개월 수를 설정합니다.(0 ~ 18 까지 설정 가능)

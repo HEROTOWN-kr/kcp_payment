@@ -1,9 +1,11 @@
 package com.payment.module.controller;
 
+import com.payment.module.model.TbAdvertiser;
 import com.payment.module.model.TbPayment;
 import com.payment.module.model.TbPlan;
 import com.payment.module.model.TbSubscription;
 import com.payment.module.repository.*;
+import com.payment.module.service.AdvertiserService;
 import com.payment.module.service.PaymentService;
 import com.payment.module.service.PlanService;
 import com.payment.module.service.SubscriptionService;
@@ -39,6 +41,9 @@ public class IndexController{
     private SubscriptionService subscriptionService;
 
     @Autowired
+    private AdvertiserService advertiserService;
+
+    @Autowired
     private SubscriptionRepository subscriptionRepository;
 
     @GetMapping("/")
@@ -68,11 +73,6 @@ public class IndexController{
 
     @RequestMapping(value = "/payment/order", method = RequestMethod.GET)
     public String payment_web_order(@RequestParam Map<String,String> allParams, ModelMap model, HttpServletRequest request) {
-        model.addAttribute("money", allParams.get("money"));
-        model.addAttribute("plan", allParams.get("plan"));
-        model.addAttribute("name", allParams.get("name"));
-        model.addAttribute("email", allParams.get("email"));
-        model.addAttribute("phone", allParams.get("phone"));
         model.addAttribute("advId", allParams.get("advId"));
         model.addAttribute("planId", allParams.get("planId"));
 
@@ -84,11 +84,25 @@ public class IndexController{
 
         try {
             TbPlan MyPlan = planService.get(planId);
+            String planName = MyPlan.getPlnName();
             int planMonth = MyPlan.getPlnMonth();
             int planPrice = MyPlan.getPlnPriceMonth();
-            double finalPrice = Math.round(planMonth * planPrice * 1.1);
+            long finalPrice = Math.round(planMonth * planPrice * 1.1);
 
-            LocalDate currentLocalDate = LocalDate.now();
+            model.addAttribute("money", Long.toString(finalPrice));
+            model.addAttribute("plan", planName);
+
+
+            TbAdvertiser Advertiser = advertiserService.get(advId);
+            String ADV_NAME = Advertiser.getAdvName();
+            String ADV_EMAIL = Advertiser.getAdvEmail();
+            String ADV_TEL = Advertiser.getAdvTel();
+
+            model.addAttribute("name", ADV_NAME);
+            model.addAttribute("email", ADV_EMAIL);
+            model.addAttribute("phone", ADV_TEL);
+
+            /*LocalDate currentLocalDate = LocalDate.now();
             LocalDate finishLocalDate = LocalDate.now().plusMonths(planMonth);
 
             Date currentDate = Date.valueOf(currentLocalDate);
@@ -102,7 +116,7 @@ public class IndexController{
             subscription.setSubEndDt(finishDate);
             subscription.setSubStatus("2");
             subscription.setSubActive("1");
-            subscriptionService.save(subscription);
+            subscriptionService.save(subscription);*/
 
 
             return "payment/order";
@@ -129,6 +143,7 @@ public class IndexController{
     public String payment_pp_cli_hub(
 //            @RequestParam Map<String,Object> allParams
     @RequestParam(value = "advId", required = true) String advId,
+    @RequestParam(value = "planId", required = true) String planId,
     @RequestParam(value = "req_tx", required = true) String request_req_tx,
     @RequestParam(value = "tran_cd", required = true) String request_tran_cd,
     @RequestParam(value = "ordr_idxx", required = true) String request_ordr_idxx,
@@ -142,7 +157,8 @@ public class IndexController{
     @RequestParam(value = "cash_tr_code", required = true) String request_cash_tr_code,
     @RequestParam(value = "cash_id_info", required = true) String request_cash_id_info,
     @RequestParam(value = "tno", required = false) String request_tno,
-    HttpServletRequest request
+    HttpServletRequest request,
+    ModelMap model
     ) {
 
         /* ============================================================================== */
@@ -150,7 +166,10 @@ public class IndexController{
         /* = -------------------------------------------------------------------------- = */
         String req_tx         = f_get_parm( request_req_tx ); // 요청 종류
         String tran_cd        = f_get_parm( request_tran_cd ); // 처리 종류
+
         int advertiserId = Integer.parseInt(advId);
+        int planIdInt = Integer.parseInt(planId);
+
         /* = -------------------------------------------------------------------------- = */
         String cust_ip        = f_get_parm( request.getRemoteAddr()                  ); // 요청 IP
         String ordr_idxx      = f_get_parm( request_ordr_idxx ); // 쇼핑몰 주문번호
@@ -444,8 +463,6 @@ public class IndexController{
                         payment.setPayRsvPnt(rsv_pnt);
                         payment.setPayTotalAmount(total_amount);
                     }
-
-
                 }
 
                 // 07-1-2. 계좌이체
@@ -494,7 +511,26 @@ public class IndexController{
                 payment.setPayCashNo(cash_no);
 
                  try {
-                    paymentService.save(payment);
+                     TbPlan MyPlan = planService.get(planIdInt);
+                     int planMonth = MyPlan.getPlnMonth();
+
+                     LocalDate currentLocalDate = LocalDate.now();
+                     LocalDate finishLocalDate = LocalDate.now().plusMonths(planMonth);
+
+                     Date currentDate = Date.valueOf(currentLocalDate);
+                     Date finishDate = Date.valueOf(finishLocalDate);
+
+                     subscriptionRepository.updateSubscription(advId);
+                     TbSubscription subscription = new TbSubscription();
+                     subscription.setPlnId(planIdInt);
+                     subscription.setAdvId(advertiserId);
+                     subscription.setSubStartDt(currentDate);
+                     subscription.setSubEndDt(finishDate);
+                     subscription.setSubStatus("2");
+                     subscription.setSubActive("1");
+                     subscriptionService.save(subscription);
+
+                     paymentService.save(payment);
                 } catch (Exception e){
                     e.printStackTrace();
                     bSucc = "false";
@@ -559,10 +595,50 @@ public class IndexController{
         /* =   08. 승인 결과 DB 처리 END                                                = */
         /* = ========================================================================== = */
 
-
-
-
-
+        model.addAttribute("req_tx", req_tx);
+        model.addAttribute("use_pay_method", use_pay_method);
+        model.addAttribute("bSucc", bSucc);
+        model.addAttribute("amount", amount);
+        model.addAttribute("res_cd", res_cd);
+        model.addAttribute("res_msg", res_msg);
+        model.addAttribute("ordr_idxx", ordr_idxx);
+        model.addAttribute("tno", tno);
+        model.addAttribute("good_name", good_name);
+        model.addAttribute("buyr_name", buyr_name);
+        model.addAttribute("buyr_tel1", buyr_tel1);
+        model.addAttribute("buyr_tel2", buyr_tel2);
+        model.addAttribute("buyr_mail", buyr_mail);
+        model.addAttribute("app_time", app_time);
+        model.addAttribute("card_cd", card_cd);
+        model.addAttribute("card_name", card_name);
+        model.addAttribute("app_no", app_no);
+        model.addAttribute("noinf", noinf);
+        model.addAttribute("quota", quota);
+        model.addAttribute("partcanc_yn", partcanc_yn);
+        model.addAttribute("card_bin_type_01", card_bin_type_01);
+        model.addAttribute("card_bin_type_02", card_bin_type_02);
+        model.addAttribute("bank_name", bank_name);
+        model.addAttribute("bank_code", bank_code);
+        model.addAttribute("bankname", bankname);
+        model.addAttribute("depositor", depositor);
+        model.addAttribute("account", account);
+        model.addAttribute("va_date", va_date);
+        model.addAttribute("pnt_issue", pnt_issue);
+        model.addAttribute("pnt_app_time", pnt_app_time);
+        model.addAttribute("pnt_app_no", pnt_app_no);
+        model.addAttribute("pnt_amount", pnt_amount);
+        model.addAttribute("add_pnt", add_pnt);
+        model.addAttribute("use_pnt", use_pnt);
+        model.addAttribute("rsv_pnt", rsv_pnt);
+        model.addAttribute("commid", commid);
+        model.addAttribute("mobile_no", mobile_no);
+        model.addAttribute("tk_van_code", tk_van_code);
+        model.addAttribute("tk_app_no", tk_app_no);
+        model.addAttribute("cash_yn", cash_yn);
+        model.addAttribute("cash_authno", cash_authno);
+        model.addAttribute("cash_tr_code", cash_tr_code);
+        model.addAttribute("cash_id_info", cash_id_info);
+        model.addAttribute("cash_no", cash_no);
 
         return "payment/pp_cli_hub";
     }
@@ -576,7 +652,17 @@ public class IndexController{
     }
 
     @RequestMapping(value = "/payment/result", method = RequestMethod.POST)
-    public String payment_result() {
+    public String payment_result(@RequestParam Map<String,Object> allParams, HttpServletRequest request) {
         return "payment/result";
+    }
+
+    @RequestMapping(value = "/payment/success")
+    public String payment_success() {
+        return "payment/success";
+    }
+
+    @RequestMapping(value = "/payment/failed")
+    public String payment_failed() {
+        return "payment/success";
     }
 }

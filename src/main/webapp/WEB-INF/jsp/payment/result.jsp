@@ -620,13 +620,32 @@
     /* ============================================================================== */
 %>
                     <!-- 매입 요청/처음으로 이미지 버튼 -->
-                <tr>
-                <div class="btnset">
-                <a href="/payment" class="home">처음으로</a>
-                </div>
-                </tr>
-              </tr>
+    <%
+        if ( ! "false".equals ( bSucc ) &&  "0000".equals(res_cd)) {
+            /* ============================================================================== */
+            /* =   01-1-1. 정상 결제시 결제 결과 출력 ( res_cd값이 0000인 경우)             = */
+            /* = -------------------------------------------------------------------------- = */
+    %>
+        <tr>
+        <div class="btnset">
+        <a href="/payment/success" class="home">확인</a>
+        </div>
+        </tr>
+
+    <%
+    } else {
+    %>
+        <tr>
+            <div class="btnset">
+                <a href="/payment/failed" class="home">닫기</a>
             </div>
+        </tr>
+    <%
+    }
+    %>
+
+          </tr>
+        </div>
         <div class="footer">
                 Copyright (c) NHN KCP INC. All Rights reserved.
         </div>

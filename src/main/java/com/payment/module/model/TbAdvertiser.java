@@ -12,6 +12,12 @@ public class TbAdvertiser {
     @Column(name = "ADV_NAME")
     private String advName;
 
+    @Column(name = "ADV_EMAIL")
+    private String advEmail;
+
+    @Column(name = "ADV_TEL")
+    private String advTel;
+
     @Column(name = "ADV_DT")
     private java.sql.Timestamp advDt;
 
@@ -29,6 +35,22 @@ public class TbAdvertiser {
 
     public void setAdvName(String advName) {
         this.advName = advName;
+    }
+
+    public String getAdvEmail() {
+        return this.advEmail;
+    }
+
+    public void setAdvEmail(String advEmail) {
+        this.advEmail = advEmail;
+    }
+
+    public String getAdvTel() {
+        return this.advTel;
+    }
+
+    public void setAdvTel(String advTel) {
+        this.advTel = advTel;
     }
 
     public java.sql.Timestamp getAdvDt() {
