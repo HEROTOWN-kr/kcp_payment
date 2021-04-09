@@ -25,7 +25,8 @@
     /* = 테스트 시 : testpaygw.kcp.co.kr로 설정해 주십시오.                         = */
     /* = 실결제 시 : paygw.kcp.co.kr로 설정해 주십시오.                             = */
     /* ============================================================================== */
-    String g_conf_gw_url    = "testpaygw.kcp.co.kr";
+//    String g_conf_gw_url    = "testpaygw.kcp.co.kr";
+    String g_conf_gw_url    = "paygw.kcp.co.kr";
 
     /* ============================================================================== */
     /* = ※ 주의 ※                                                                 = */
@@ -35,7 +36,8 @@
     /* = 실결제 시 : src="https://pay.kcp.co.kr/plugin/payplus_web.jsp"             = */
     /* =----------------------------------------------------------------------------= */
     /* ============================================================================== */
-    String g_conf_js_url    = "https://testpay.kcp.co.kr/plugin/payplus_web.jsp";
+//    String g_conf_js_url    = "https://testpay.kcp.co.kr/plugin/payplus_web.jsp";
+    String g_conf_js_url    = "https://pay.kcp.co.kr/plugin/payplus_web.jsp";
 
     /* ============================================================================== */
     /* = 스마트폰 SOAP 통신 설정                                                    = */
@@ -43,7 +45,8 @@
     /* = 테스트 시 : false                                                          = */
     /* = 실결제 시 : true                                                           = */
     /* ============================================================================== */
-    boolean g_conf_server    = false;
+//    boolean g_conf_server    = false;
+    boolean g_conf_server    = true;
 
     /* ============================================================================== */
     /* = g_conf_site_cd, g_conf_site_key 설정                                       = */
@@ -55,15 +58,18 @@
     /* = 실결제 시 : 반드시 KCP에서 발급한 사이트코드(site_cd)와 사이트키(site_key) = */
     /* =            로 설정해 주십시오.                                             = */
     /* ============================================================================== */
-    String g_conf_site_cd   = "T0000";
-    String g_conf_site_key  = "3grptw1.zW0GSo4PQdaGvsF__";
+    /*String g_conf_site_cd   = "T0000";
+    String g_conf_site_key  = "3grptw1.zW0GSo4PQdaGvsF__";*/
+    String g_conf_site_cd   = "ABJXF";
+    String g_conf_site_key  = "0YrV3xlFox8xxG-35Ldbi1x__";
 
     /* ============================================================================== */
     /* = g_conf_site_name 설정                                                      = */
     /* =----------------------------------------------------------------------------= */
     /* = 사이트명 설정(한글 불가) : 반드시 영문자로 설정하여 주시기 바랍니다.       = */
     /* ============================================================================== */
-    String g_conf_site_name = "KCP TEST SHOP";
+//    String g_conf_site_name = "KCP TEST SHOP";
+    String g_conf_site_name = "KCP";
 
     /* ============================================================================== */
     /* = 지불 데이터 셋업 (변경 불가)                                               = */

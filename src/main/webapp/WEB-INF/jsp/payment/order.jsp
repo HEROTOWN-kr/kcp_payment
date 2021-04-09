@@ -144,7 +144,7 @@
                 date = "0" + date;
             }
 
-            var order_idxx = "TEST" + year + "" + month + "" + date + "" + time;
+            var order_idxx = "INFLAI" + year + "" + month + "" + date + "" + time;
 
             document.order_info.ordr_idxx.value = order_idxx;
 
@@ -171,12 +171,12 @@
     /* =   결제에 필요한 주문 정보를 입력 및 설정합니다.                            = */
     /* = -------------------------------------------------------------------------- = */
 %>
-                    <h1>[결제요청] <span> 이 페이지는 결제를 요청하는 샘플(예시) 페이지입니다.</span></h1>
+                    <h1>[결제요청]</h1>
                     <!-- 상단 문구 -->
-                    <div class="sample">
-                            <p>이 페이지는 결제를 요청하는 페이지입니다.<br />                            
+                    <div class="sample" style="padding: 20px 0;">
+                            <%--<p>이 페이지는 결제를 요청하는 페이지입니다.<br />
                             소수 수정 시 <span>※ 필수, ※ 옵션</span>표시가 포함된 문장은 가맹점의 상황에 맞게 적절히 수정 적용하시기 바랍니다.
-                            </p>
+                            </p>--%>
 
                 <!-- 주문정보 타이틀 -->
                     <h2>&sdot; 주문 정보</h2>
@@ -204,7 +204,7 @@
                     /* =  KCP에 신청된 결제수단으로만 결제가 가능합니다.                            = */
                     /* = -------------------------------------------------------------------------- = */
 %>
-                    <tr>
+                   <%-- <tr>
                         <th>지불 방법</th>
                         <td>
                             <select name="pay_method">
@@ -218,48 +218,48 @@
                                 <option value="111000000000">신용카드/계좌이체/가상계좌</option>
                             </select>
                         </td>
-                    </tr>
+                    </tr>--%>
                     <!-- 주문번호(ordr_idxx) -->
                     <tr>
                         <th>주문 번호</th>
-                        <td><input type="text" name="ordr_idxx" class="w200" value="" maxlength="40"/></td>
+                        <td><input readonly type="text" name="ordr_idxx" class="w200" value="" maxlength="40"/></td>
                     </tr>
                     <!-- 상품명(good_name) -->
                     <tr>
                         <th>상품명</th>
-                        <td><input type="text" name="good_name" class="w100" value="${plan}"/></td>
+                        <td><input readonly type="text" name="good_name" class="w100" value="${plan}"/></td>
                     </tr>
                     <!-- 결제금액(good_mny) - ※ 필수 : 값 설정시 ,(콤마)를 제외한 숫자만 입력하여 주십시오. -->
                     <tr>
                         <th>결제 금액</th>
-                        <td><input type="text" name="good_mny" class="w100" value="${money}" maxlength="9"/>원(숫자만 입력)</td>
+                        <td><input readonly type="text" name="good_mny" class="w100" value="${money}" maxlength="9"/>원(숫자만 입력)</td>
                     </tr>
                     <!-- 주문자명(buyr_name) -->
                     <tr>
                         <th>주문자명</th>
-                        <td><input type="text" name="buyr_name" class="w100" value="${name}"/></td>
+                        <td><input readonly type="text" name="buyr_name" class="w100" value="${name}"/></td>
                     </tr>
                     <!-- 주문자 E-mail(buyr_mail) -->
                     <tr>
                         <th>E-mail</th>
-                        <td><input type="text" name="buyr_mail" class="w200" value="${email}" maxlength="30" /></td>
+                        <td><input readonly type="text" name="buyr_mail" class="w200" value="${email}" maxlength="30" /></td>
                     </tr>
                     <!-- 주문자 연락처1(buyr_tel1) -->
                     <tr>
                         <th>전화번호</th>
-                        <td><input type="text" name="buyr_tel1" class="w100" value="${phone}"/></td>
+                        <td><input readonly type="text" name="buyr_tel1" class="w100" value="${phone}"/></td>
                     </tr>
                     <!-- 휴대폰번호(buyr_tel2) -->
                     <tr>
                         <th>휴대폰번호</th>
-                        <td><input type="text" name="buyr_tel2" class="w100" value="010-0000-0000"/></td>
+                        <td><input readonly type="text" name="buyr_tel2" class="w100" value="010-0000-0000"/></td>
                     </tr>
                     </table>
 
                     <!-- 결제 요청/처음으로 이미지 -->
                     <div class="btnset" id="display_pay_button" style="display:block">
                       <input name="" id="order_submit" type="button" class="submit" value="결제요청" onclick="jsf__pay(this.form);"/>
-                      <a href="/" class="home">처음으로</a>
+<%--                      <a href="/" class="home">처음으로</a>--%>
                     </div>
 
                   <div class="footer">
@@ -283,6 +283,7 @@
     <input type="hidden" name="req_tx"          value="pay" />
     <input type="hidden" name="site_cd"         value="<%= g_conf_site_cd   %>" />
     <input type="hidden" name="site_name"       value="<%= g_conf_site_name %>" />
+    <input type="hidden" name="pay_method"       value="100000000000" />
     <input type="hidden" name="advId"       value="${advId}" />
     <input type="hidden" name="planId"       value="${planId}" />
 <%

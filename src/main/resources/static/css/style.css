@@ -13,10 +13,10 @@ table {border-collapse:collapse;}
 #sample_index {width:400px; height:400px; position:absolute; background:#0e66a4; left:50%; top:50%; margin:-300px 0 0 -200px; overflow:hidden;}
 #sample_index h1 {font-size:20px; color:#fff; text-align:center; margin:25px 15px 15px; padding-bottom:25px; border-bottom:1px solid #60aee6;}
 #sample_index .btnSet {margin:30px 50px 0;}
-#sample_index a {position:relative; font-family:HY°ß°íµñ; display:inline-block; color:#fff;  font-size:16px; width:270px; text-align:leftr; padding:25px 0 20px 20px; margin-bottom:20px; cursor: pointer;
--webkit-box-shadow: 5px 5px 7px 0px rgba(5, 50, 70, 0.5);
--o-box-shadow: 5px 5px 7px 0px rgba(5, 50, 70, 0.5);
-box-shadow: 5px 5px 7px 0px rgba(5, 50, 70, 0.5);
+#sample_index a {position:relative; font-family:HY????; display:inline-block; color:#fff;  font-size:16px; width:270px; text-align:leftr; padding:25px 0 20px 20px; margin-bottom:20px; cursor: pointer;
+    -webkit-box-shadow: 5px 5px 7px 0px rgba(5, 50, 70, 0.5);
+    -o-box-shadow: 5px 5px 7px 0px rgba(5, 50, 70, 0.5);
+    box-shadow: 5px 5px 7px 0px rgba(5, 50, 70, 0.5);
 }
 #sample_index a.btn1 {background:#2cd740; left:15px;}
 #sample_index a.btn1:hover {background:#000; color:#2cd78c;}
@@ -30,7 +30,7 @@ box-shadow: 5px 5px 7px 0px rgba(5, 50, 70, 0.5);
 
 /*layout*/
 #sample_wrap {width:100%;}
-.sample {margin:0 auto; width:500px; border-left:1px solid #0e66a4; border-right:1px solid #0e66a4; border-bottom:1px solid #0e66a4; box-sizing: border-box;}
+.sample {margin:0 auto; width:498px; border-left:1px solid #0e66a4; border-right:1px solid #0e66a4; border-bottom:1px solid #0e66a4;}
 
 /*style*/
 #sample_wrap h1 {width:500px; margin:50px auto 0; font-size:12px; background:#0e66a4; color:#fff; height:35px; line-height:35px; text-align:center;}
