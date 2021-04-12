@@ -212,7 +212,8 @@ public class IndexController{
         /* = -------------------------------------------------------------------------- = */
         /* =       결제에 필요한 인스턴스를 생성하고 초기화 합니다.                     = */
         /* = -------------------------------------------------------------------------- = */
-       /* String g_conf_gw_url    = "testpaygw.kcp.co.kr";
+        //Test pay
+        /*String g_conf_gw_url    = "testpaygw.kcp.co.kr";
         String g_conf_gw_port   = "8090";        // 포트번호(변경불가)
         int    g_conf_tx_mode   = 0;             // 변경불가
         String g_conf_log_dir   = "C:\\Tomcat\\apache-tomcat-8.5.64\\logs"; // LOG 디렉토리 절대경로 입력
@@ -220,6 +221,7 @@ public class IndexController{
         String g_conf_site_key  = "3grptw1.zW0GSo4PQdaGvsF__";
         String g_conf_log_level = "3";*/
 
+        //Real pay
         String g_conf_gw_url    = "paygw.kcp.co.kr";
         String g_conf_log_dir   = "C:\\Tomcat\\apache-tomcat-8.5.64\\logs"; // LOG 디렉토리 절대경로 입력
         String g_conf_site_cd   = "ABJXF";
@@ -821,6 +823,7 @@ public class IndexController{
         /* = -------------------------------------------------------------------------- = */
         /* =       결제에 필요한 인스턴스를 생성하고 초기화 합니다.                     = */
         /* = -------------------------------------------------------------------------- = */
+        //Test pay
         /*String g_conf_gw_url    = "testpaygw.kcp.co.kr";
         String g_conf_gw_port   = "8090";        // 포트번호(변경불가)
         int    g_conf_tx_mode   = 0;             // 변경불가
@@ -829,6 +832,7 @@ public class IndexController{
         String g_conf_site_key  = "3grptw1.zW0GSo4PQdaGvsF__";
         String g_conf_log_level = "3";*/
 
+        //Real pay
         String g_conf_gw_url    = "paygw.kcp.co.kr";
         String g_conf_log_dir   = "C:\\Tomcat\\apache-tomcat-8.5.64\\logs"; // LOG 디렉토리 절대경로 입력
         String g_conf_site_cd   = "ABJXF";

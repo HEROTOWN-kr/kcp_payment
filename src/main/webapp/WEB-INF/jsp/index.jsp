@@ -44,7 +44,7 @@
 <div id="sample_index">
     <h1>PAYMENT SAMPLE</h1>
     <div class="btnSet">
-        <a href="order?planId=5&advId=69" class="btn1" >&sdot; 결제 요청 <span>&rarr;</span></a>
+        <a href="order?planId=7&advId=69" class="btn1" >&sdot; 결제 요청 <span>&rarr;</span></a>
         <a href="mobile_sample/order_mobile" class="btn2">&sdot; 스마트폰 결제 요청 <span>&rarr;</span></a>
     </div>
     <!--footer-->

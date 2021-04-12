@@ -293,7 +293,8 @@
                   예) value 값을 "5" 로 설정했을 경우 => 카드결제시 결제창에 일시불부터 5개월까지 선택가능
     */
 %>
-    <input type="hidden" name="quotaopt"        value="12"/>
+<%--    <input type="hidden" name="quotaopt"        value="12"/>--%>
+    <input type="hidden" name="quotaopt"        value="3"/>
     <!-- 필수 항목 : 결제 금액/화폐단위 -->
     <input type="hidden" name="currency"        value="WON"/>
 <%
