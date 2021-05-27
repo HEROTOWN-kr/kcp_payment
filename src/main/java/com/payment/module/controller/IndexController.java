@@ -9,6 +9,7 @@ import com.payment.module.service.AdvertiserService;
 import com.payment.module.service.PaymentService;
 import com.payment.module.service.PlanService;
 import com.payment.module.service.SubscriptionService;
+import org.aspectj.apache.bcel.classfile.annotation.NameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,10 +17,20 @@ import org.springframework.web.bind.annotation.*;
 
 import com.kcp.*;
 
+import javax.naming.Name;
 import javax.servlet.http.HttpServletRequest;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
 import java.sql.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -510,6 +521,26 @@ public class IndexController{
                     subscriptionService.save(subscription);
 
                     paymentService.save(payment);
+
+                    try {
+                        TbAdvertiser Advertiser = advertiserService.get(advertiserId);
+                        String ADV_NAME = Advertiser.getAdvName();
+                        String planName = MyPlan.getPlnName();
+                        Integer planPriceMonth = MyPlan.getPlnPriceMonth();
+                        Integer price = planPriceMonth * planMonth;
+                        String PLN_PRICE = price.toString();
+                        String CUR_DATE = currentDate.toString();
+
+                        KakaoMessage Message1 = new KakaoMessage();
+                        KakaoMessage Message2 = new KakaoMessage();
+                        Message1.set("Andrian", "01026763937", ADV_NAME, CUR_DATE, PLN_PRICE, planName);
+                        Message2.set("김무성", "01023270875", ADV_NAME, CUR_DATE, PLN_PRICE, planName);
+                        Message1.sendMessage();
+                        Message2.sendMessage();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 } catch (Exception e){
                     e.printStackTrace();
                     bSucc = "false";
@@ -1100,27 +1131,46 @@ public class IndexController{
                 payment.setPayCashAuthno(cash_authno);
                 payment.setPayCashNo(cash_no);
 
-                 try {
-                     TbPlan MyPlan = planService.get(planIdInt);
-                     int planMonth = MyPlan.getPlnMonth();
+                try {
+                    TbPlan MyPlan = planService.get(planIdInt);
+                    int planMonth = MyPlan.getPlnMonth();
 
-                     LocalDate currentLocalDate = LocalDate.now();
-                     LocalDate finishLocalDate = LocalDate.now().plusMonths(planMonth);
+                    LocalDate currentLocalDate = LocalDate.now();
+                    LocalDate finishLocalDate = LocalDate.now().plusMonths(planMonth);
 
-                     Date currentDate = Date.valueOf(currentLocalDate);
-                     Date finishDate = Date.valueOf(finishLocalDate);
+                    Date currentDate = Date.valueOf(currentLocalDate);
+                    Date finishDate = Date.valueOf(finishLocalDate);
 
-                     subscriptionRepository.updateSubscription(advId);
-                     TbSubscription subscription = new TbSubscription();
-                     subscription.setPlnId(planIdInt);
-                     subscription.setAdvId(advertiserId);
-                     subscription.setSubStartDt(currentDate);
-                     subscription.setSubEndDt(finishDate);
-                     subscription.setSubStatus("2");
-                     subscription.setSubActive("1");
-                     subscriptionService.save(subscription);
+                    subscriptionRepository.updateSubscription(advId);
+                    TbSubscription subscription = new TbSubscription();
+                    subscription.setPlnId(planIdInt);
+                    subscription.setAdvId(advertiserId);
+                    subscription.setSubStartDt(currentDate);
+                    subscription.setSubEndDt(finishDate);
+                    subscription.setSubStatus("2");
+                    subscription.setSubActive("1");
+                    subscriptionService.save(subscription);
 
-                     paymentService.save(payment);
+                    paymentService.save(payment);
+
+                    try {
+                        TbAdvertiser Advertiser = advertiserService.get(advertiserId);
+                        String ADV_NAME = Advertiser.getAdvName();
+                        String planName = MyPlan.getPlnName();
+                        Integer planPriceMonth = MyPlan.getPlnPriceMonth();
+                        Integer price = planPriceMonth * planMonth;
+                        String PLN_PRICE = price.toString();
+                        String CUR_DATE = currentDate.toString();
+
+                        KakaoMessage Message1 = new KakaoMessage();
+                        KakaoMessage Message2 = new KakaoMessage();
+                        Message1.set("Andrian", "01026763937", ADV_NAME, CUR_DATE, PLN_PRICE, planName);
+                        Message2.set("김무성", "01023270875", ADV_NAME, CUR_DATE, PLN_PRICE, planName);
+                        Message1.sendMessage();
+                        Message2.sendMessage();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } catch (Exception e){
                     e.printStackTrace();
                     bSucc = "false";

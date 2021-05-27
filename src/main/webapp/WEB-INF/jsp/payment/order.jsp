@@ -230,10 +230,10 @@
                         <td><input readonly type="text" name="good_name" class="w100" value="${plan}"/></td>
                     </tr>
                     <!-- 결제금액(good_mny) - ※ 필수 : 값 설정시 ,(콤마)를 제외한 숫자만 입력하여 주십시오. -->
-                    <tr>
+                    <%--<tr>
                         <th>결제 금액</th>
                         <td><input readonly type="text" name="good_mny" class="w100" value="${money}" maxlength="9"/>원(숫자만 입력)</td>
-                    </tr>
+                    </tr>--%>
                     <!-- 주문자명(buyr_name) -->
                     <tr>
                         <th>주문자명</th>
@@ -280,6 +280,7 @@
     /* = -------------------------------------------------------------------------- = */
     // 요청종류 : 승인(pay)/취소,매입(mod) 요청시 사용
 %>
+    <input type="hidden" name="good_mny"        value="${money}" />
     <input type="hidden" name="req_tx"          value="pay" />
     <input type="hidden" name="site_cd"         value="<%= g_conf_site_cd   %>" />
     <input type="hidden" name="site_name"       value="<%= g_conf_site_name %>" />
